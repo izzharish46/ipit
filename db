@@ -1,0 +1,232 @@
+package swingcomponent;
+import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;
+
+
+public class SwingComponent extends JFrame{
+    
+    String driver = "com.mysql.cj.jdbc.Driver";
+    String uname = "root";
+    String passw = "";
+    String url = "jdbc:mysql://localhost:3306/customer";
+    
+JLabel lbl1,lbl2,lbl3,lbl4,lbl5;
+JTextField txt1;
+JPasswordField pf;
+JCheckBox cb1,cb2;
+JRadioButton rb1, rb2;
+JButton btn1,btn2,btn3,btn4,btn5;
+JTextArea ta1;
+JComboBox cx1;
+
+String getQualified,getGender,getFaculty;
+    
+    SwingComponent(){
+        lbl1 = new JLabel("Email :");
+        lbl1.setBounds(30,30,100,30);
+        add(lbl1);
+        txt1 = new JTextField();
+        txt1.setBounds(120,30,150,30);
+        add(txt1);
+        
+        lbl2 = new JLabel("Password :");
+        lbl2.setBounds(30,70,100,30);
+        add(lbl2);
+        pf = new JPasswordField();
+        pf.setBounds(120,70,150,30);
+        add(pf);
+        
+        lbl3 = new JLabel("Qualification :");
+        lbl3.setBounds(30,110,100,30);
+        add(lbl3);
+        cb1 = new JCheckBox("SPM");
+        cb1.setBounds(120,115,80,20);
+        add(cb1);
+        cb2 = new JCheckBox("DIPLOMA");
+        cb2.setBounds(200,115,80,20);
+        add(cb2);
+        
+        
+        lbl4 = new JLabel("Gender :");
+        lbl4.setBounds(30,150,100,30);
+        add(lbl4);
+        ButtonGroup bg1 = new ButtonGroup();
+        rb1 = new JRadioButton("Male");
+        rb1.setBounds(120,150,80,30);
+        add(rb1);
+        bg1.add(rb1);
+        rb2 = new JRadioButton("Female");
+        rb2.setBounds(200,150,80,30);
+        add(rb2);
+        bg1.add(rb2);
+        
+        lbl5 = new JLabel("Faculty :");
+        lbl5.setBounds(30,190,100,30);
+        add(lbl5);
+        String seat[] = {"Please Select", "JTMK", "JKM", "JKE", "JP"};
+        cx1 = new JComboBox(seat);
+        cx1.setBounds(120,190,150,30);
+        add(cx1);
+        
+        btn1 = new JButton("CLEAR");
+        btn1.setBounds(20,230,80,30);
+        add(btn1);
+        btn1.addActionListener(new ActionListener () {
+            @Override
+            public void actionPerformed (ActionEvent e){
+                txt1.setText("");
+                pf.setText("");
+                cb1.setSelected(false);
+                cb2.setSelected(false);
+                bg1.clearSelection();
+                cx1.setSelectedItem("Please Select");
+                ta1.setText(null);
+            }
+        });
+        
+        btn2 = new JButton("TEST");
+        btn2.setBounds(110,230,80,30);
+        btn2.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent a){
+            
+                try{
+                    Class.forName(driver);
+                    Connection conn = DriverManager.getConnection(url, uname, passw);
+                    
+                    if(!conn.isClosed()){
+                        JOptionPane.showMessageDialog(null, "Successful Connection");
+                    }
+                }
+                catch(Exception ex){
+                    JOptionPane.showMessageDialog(null,"Error From Button Test"+ ex);
+                }
+            }
+        });
+        add(btn2);
+        
+        btn3 = new JButton("SUBMIT");
+        btn3.setBounds(200,230,80,30);
+        btn3.addActionListener(new ActionListener(){
+           @Override
+           public void actionPerformed (ActionEvent g){
+               String pass = new String(pf.getPassword());
+               String email = txt1.getText();
+               
+                
+                if (cb1.isSelected()) {
+                    getQualified = "SPM";
+                }
+                else if (cb2.isSelected()) {
+                    getQualified = "DIPLOMA";
+                }
+                else {
+                    getQualified = "Not Selected";
+                }
+
+                if (rb1.isSelected()) {
+                    getGender = "Male";
+                }
+                else if (rb2.isSelected()) {
+                    getGender = "Female";
+                }
+                else{
+                    getGender = "Secret";
+                }
+        
+                String getFaculty = cx1.getSelectedItem().toString();
+               
+               ta1.append("Email :" + txt1.getText()+"\n"
+                        + "Password" + pf.getText()+"\n"
+                        + "Qualification :" + getQualified +"\n"
+                        + "Gender :" + getGender +"\n"
+                        + "Faculty :" + getFaculty +"\n");
+//                        + "Faculty :" + cx1.getSelectedItem().toString() +"\n");
+
+               //INSERT INTO DATABASE TABLE
+               try{
+                   Class.forName(driver);
+                   Connection kon = DriverManager.getConnection(url, uname, passw);
+                   String sql = "insert into info (email,pass,qua,gen,faculty) values('"+email+"','"+pass+"','"+getQualified+"','"+getGender+"','"+getFaculty+"')";
+                   //insert into info(email,pass) values ('email','pass')
+                   Statement stmt = kon.createStatement();
+                   stmt.executeUpdate(sql);
+                   //NOTE :
+                   //Insert,Update,Delete (USE executeUpdate())
+                   //Select (USE executeQuery())
+                   JOptionPane.showMessageDialog(null,"Success Insert");
+               }
+               catch(Exception el){
+                   JOptionPane.showMessageDialog(null,"Error Submit"+el);
+               }
+               
+           }
+        });
+        add(btn3);
+        
+        btn4 = new JButton("Delete");
+        btn4.setBounds(290,230,80,30);
+        btn4.addActionListener(new ActionListener(){
+           @Override
+           public void actionPerformed (ActionEvent a){
+           try{
+                   Class.forName(driver);
+                   Connection kon = DriverManager.getConnection(url, uname, passw);
+                   String sql = "Delete from info";
+                   Statement stmt = kon.createStatement();
+                   stmt.executeUpdate(sql);
+
+                   JOptionPane.showMessageDialog(null,"Success Delete");
+               }
+               catch(Exception el){
+                   JOptionPane.showMessageDialog(null,"Error Delete"+el);
+               }
+               
+           }
+        });
+        add(btn4);
+        
+        btn5 = new JButton("Update");
+        btn5.setBounds(290,270,80,30);
+        btn5.addActionListener(new ActionListener(){
+           @Override
+           public void actionPerformed (ActionEvent a){
+               String pass = new String(pf.getPassword());
+               String email = txt1.getText();
+           try{
+               String no = JOptionPane.showInputDialog("insert pk_info number");
+               
+                   Class.forName(driver);
+                   Connection kon = DriverManager.getConnection(url, uname, passw);
+                   String sql = "Update info set email='"+email+"' ,pass = '"+pass+"' where pk_info = "+no;
+                   Statement stmt = kon.createStatement();
+                   stmt.executeUpdate(sql);
+
+                   JOptionPane.showMessageDialog(null,"Success Update");
+               }
+               catch(Exception el){
+                   JOptionPane.showMessageDialog(null,"Error Update"+el);
+               }
+               
+           }
+        });
+        add(btn5);
+        
+        ta1 = new JTextArea();
+        ta1.setBounds(20,320,260,120);
+        ta1.setEditable(false);
+        add(ta1);
+        
+        
+        //JFrame
+        setLayout(null);
+        setVisible(true);
+        setSize(400,450);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    public static void main(String[] args) {
+        new SwingComponent();
+    }
+    
+}

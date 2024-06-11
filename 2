@@ -1,0 +1,103 @@
+package guiswing;
+import javax.swing.*;
+
+public class GuiSwing {
+    JFrame f;
+    JLabel lbl1, lbl2, lbl3, lbl4, lbl5, lbl6;
+    JTextField tf1;
+    JPasswordField tf2;
+    JTextArea txt;
+    JRadioButton rb1, rb2;
+    ButtonGroup bg;
+    JCheckBox cb3, cb4;
+    JComboBox<String> choice;
+    JButton clear, update, submit;
+    
+    GuiSwing() {
+        f = new JFrame();
+        
+        lbl1 = new JLabel("Name : ");
+        lbl1.setBounds(20, 70, 70, 20);
+        
+        lbl2 = new JLabel("No Matrics : ");
+        lbl2.setBounds(20, 100, 100, 20);
+        
+        lbl3 = new JLabel("Address : ");
+        lbl3.setBounds(20, 130, 70, 20);
+        
+        lbl4 = new JLabel("Gender : ");
+        lbl4.setBounds(20, 300, 70, 20);
+        
+        lbl5 = new JLabel("Qualification : ");
+        lbl5.setBounds(20, 330, 100, 20);
+        
+        lbl6 = new JLabel("Jabatan : ");
+        lbl6.setBounds(20, 360, 70, 20);
+        
+        txt = new JTextArea();
+        txt.setBounds(100, 130, 250, 150);
+        
+        tf1 = new JTextField();
+        tf1.setBounds(100, 70, 250, 20);
+        
+        tf2 = new JPasswordField();
+        tf2.setBounds(100, 100, 250, 20);
+        
+        bg = new ButtonGroup();
+        rb1 = new JRadioButton("Male");
+        rb1.setBounds(100, 300, 70, 20);
+        rb2 = new JRadioButton("Female");
+        rb2.setBounds(170, 300, 70, 20);
+        bg.add(rb1);
+        bg.add(rb2);
+        
+        cb3 = new JCheckBox("SPM");
+        cb3.setBounds(100, 330, 70, 20);
+        cb4 = new JCheckBox("DIPLOMA");
+        cb4.setBounds(170, 330, 100, 20);
+        
+        choice = new JComboBox<String>();
+        choice.addItem("JTMK");
+        choice.addItem("JKM");
+        choice.addItem("JP");
+        choice.addItem("JKE");
+        choice.setBounds(100, 360, 100, 20);
+        
+        clear = new JButton("CLEAR");
+        clear.setBounds(60, 400, 80, 30);
+        
+        update = new JButton("UPDATE");
+        update.setBounds(150, 400, 80, 30);
+        
+        submit = new JButton("Submit");
+        submit.setBounds(240, 400, 80, 30);
+        
+        f.add(submit);
+        f.add(update);
+        f.add(choice);
+        f.add(lbl6);
+        f.add(clear);
+        f.add(lbl5);
+        f.add(cb3);
+        f.add(cb4);
+        f.add(rb1);
+        f.add(rb2);
+        f.add(lbl4);
+        f.add(tf2);
+        f.add(tf1);
+        f.add(lbl3);
+        f.add(txt);
+        f.add(lbl1);
+        f.add(lbl2);
+        
+        f.setSize(600, 600);
+        f.setLayout(null);
+        f.setVisible(true);
+        
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        GuiSwing shw = new GuiSwing();
+    }
+}
